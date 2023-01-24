@@ -1,7 +1,9 @@
 const { nanoid } = require('nanoid');
 const books = require('./books');
 
-// menyimpan buku
+/*
+  1. Menyimpan buku
+*/
 const addBookHandler = (request, h) => {
   const {
     name,
@@ -58,10 +60,9 @@ const addBookHandler = (request, h) => {
   // push ke array di books.js
   books.push(newBook);
 
-  // jika input sukses maka isi variabel ini akan lebih dari 1
+  // jika input sukses maka isi variabel isSuccess pasti lebih dari 0
   const isSuccess = books.filter((note) => note.id === id).length > 0;
 
-  // maka jika lebih dari 1 maka mengembalikkan sukses
   if (isSuccess) {
     const response = h.response({
       status: 'success',
@@ -82,8 +83,11 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
-// menampilkan seluruh buku
+/*
+  2. Menampilkan seluruh buku
+*/
 const getAllBooksHandler = (request, h) => {
+  // fitur atau persyaratan opsional
   const {
     name,
     reading,
@@ -92,6 +96,8 @@ const getAllBooksHandler = (request, h) => {
 
   let getBook = books;
 
+  // mengecek jika terdapat query parameters
+  // jika ada maka isi variabel getBook diubah sesuai filter query
   if (name) {
     getBook = books.filter((bn) => bn.name.toLowerCase().includes(name.toLowerCase()));
   }
@@ -117,11 +123,15 @@ const getAllBooksHandler = (request, h) => {
   return response;
 };
 
+/*
+  3. Menampilkan detail buku
+*/
 const getBookByIdHandler = (request, h) => {
   const { bookId } = request.params;
 
   const book = books.filter((b) => b.id === bookId)[0];
 
+  // jika buku dengan id yang dilampirkan ditemukan / tidak kosong
   if (book !== undefined) {
     const response = h.response(
       {
@@ -135,6 +145,7 @@ const getBookByIdHandler = (request, h) => {
     return response;
   }
 
+  // jika buku dengan id yang dilampirkan tidak ditemukan
   const response = h.response(
     {
       status: 'fail',
@@ -145,6 +156,9 @@ const getBookByIdHandler = (request, h) => {
   return response;
 };
 
+/*
+  4. Mengubah data buku
+*/
 const editBookByIdHandler = (request, h) => {
   const { bookId } = request.params;
   const {
@@ -211,12 +225,16 @@ const editBookByIdHandler = (request, h) => {
   return response;
 };
 
+/*
+  5. Menghapus buku
+*/
 const deleteBookByIdHandler = (request, h) => {
   const { bookId } = request.params;
 
   const index = books.findIndex((b) => b.id === bookId);
 
   if (index !== -1) {
+    // hapus dari array
     books.splice(index, 1);
     const response = h.response({
       status: 'success',
