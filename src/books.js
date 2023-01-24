@@ -1,4 +1,3 @@
-// tempat manampung buku2nya
+/* eslint-disable linebreak-style */
 const books = [];
-
 module.exports = books;
