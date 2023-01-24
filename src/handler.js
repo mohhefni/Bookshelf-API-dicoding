@@ -99,7 +99,7 @@ const getAllBooksHandler = (request, h) => {
   // mengecek jika terdapat query parameters
   // jika ada maka isi variabel getBook diubah sesuai filter query
   if (name) {
-    getBook = books.filter((bn) => bn.name.toLowerCase().includes(name.toLowerCase()));
+    getBook = books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
   }
   if (reading) {
     getBook = books.filter((book) => Number(book.reading) === Number(reading));
